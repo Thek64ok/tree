@@ -1,28 +1,8 @@
 <?php
 	$conn = pg_connect("host=localhost port=5432 dbname=tree user=postgres password=");
-	$tree = pg_fetch_all(pg_query($conn, "SELECT * FROM tree ORDER BY sub_id"));
-	if(!empty($tree))
-		echo "go";
-	else
-		echo "error";
+	$tree = pg_fetch_all(pg_query($conn, "SELECT * FROM tree ORDER BY id"));
 
-    function buildTree(array &$elements, $parentId = 0) {
-        $branch = array();
-
-        foreach ($elements as $element) {
-            if ($element['sub_id'] == $parentId) {
-                $children = buildTree($elements, $element['id']);
-                if ($children) {
-                    $element['children'] = $children;
-                }
-                $branch[$element['id']] = $element;
-                unset($elements[$element['id']]);
-            }
-        }
-        return $branch;
-    }
-
-    //var_dump(tree($tree));
+	$res = !empty($tree) ? tree($tree) : '';
 
     function tree($tree, $sub_id = 0){
         $res = '';
@@ -32,18 +12,15 @@
                     '
                         <li>
                             root '.$row['id'].'
-                            <button onclick="create()">+</button>
+                            <button onclick="create('.$row['id'].')">+</button>
                             <button>-</button>
                             '.tree($tree, $row['id']).'
                         </li>
                     ';
             }
         }
-
         return $res ? '<ul>'.$res.'</ul>' : '';
     }
-
-    $res = tree($tree);
 
 ?>
 <html>
@@ -71,10 +48,23 @@
                         success: function(responce){
                                 if(responce.length > 0)
                                     $('#tree').html(responce);
-                                console.log(responce);
                             }
                     })
                 })
+            </script>
+        <?php else:?>
+            <script>
+                function create(sub_id){
+                    $.ajax({
+                        url: 'create.php',
+                        method: 'post',
+                        dataType: 'html',
+                        data: {sub_id : sub_id},
+                        success: function(response){
+                            $('#tree').html(response);
+                        }
+                    })
+                }
             </script>
         <?php endif; ?>
 	</body>
