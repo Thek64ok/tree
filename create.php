@@ -19,14 +19,14 @@
         foreach($tree as $row){
             if($row['sub_id'] == $sub_id){
                 $res .=
-                    '
-                            <li>
-                                root '.$row['id'].'
-                                <button onclick="create('.$row['id'].')">+</button>
-                                <button>-</button>
-                                '.tree($tree, $row['id']).'
-                            </li>
-                        ';
+                    "
+                        <li>
+                            root ".$row['id']."
+                            <button class=\"btn btn-success btn-sm\" type=\"button\" onclick=\"create(".$row['id'].", 'create', ".$sub_id.")\">+</button>
+                            <button class=\"btn btn-danger btn-sm\" type=\"button\" onclick=\"create(".$row['id'].", 'delete', ".$sub_id.")\">-</button>
+                            ".tree($tree, $row['id'])."
+                        </li>
+                    ";
             }
         }
         return $res ? '<ul>'.$res.'</ul>' : '';
