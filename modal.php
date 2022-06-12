@@ -47,7 +47,6 @@
                         method: 'get',
                         dataType: 'html',
                         success:function(response){
-                            console.log(response);
                             $('#tree').html('');
                             $('#create_tab').html(response);
                             $('#staticBackdrop').modal('toggle');

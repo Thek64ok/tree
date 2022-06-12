@@ -8,10 +8,11 @@
         $res = '';
         foreach($tree as $row){
             if($row['sub_id'] == $sub_id){
+                $name = empty($row['name']) ? 'root':$row['name'];
                 $res .=
                     "
                         <li>
-                            root ".$row['id']."
+                            <span class=\"normal_cursor\" onclick=\"change(".$row['id'].")\">$name ".$row['id']."</span>
                             <button class=\"btn btn-success btn-sm\" type=\"button\" onclick=\"create(".$row['id'].", 'create', ".$sub_id.")\">+</button>
                             <button class=\"btn btn-danger btn-sm\" type=\"button\" onclick=\"create(".$row['id'].", 'delete', ".$sub_id.")\">-</button>
                             ".tree($tree, $row['id'])."
@@ -41,6 +42,9 @@
                 font-size: 25px;
                 color: brown;
             }
+            .normal_cursor{
+                cursor: copy;
+            }
 		</style>
 	</head>
 	<body>
@@ -48,6 +52,9 @@
             <?php if(!empty($res)) echo $res;?>
 		</div>
         <div id="modal">
+
+        </div>
+        <div id="modal_change">
 
         </div>
         <div id="create_tab">
@@ -97,6 +104,23 @@
                     data: {sub_id : sub_id},
                     success: function(response){
                         $('#tree').html(response);
+                    }
+                })
+            }
+
+            function change(id){
+                $.ajax({
+                    url:'fi4i/modal.php',
+                    method:'get',
+                    dataType:'html',
+                    data:{id:id},
+                    async:false,
+                    success:function(response){
+                        $('#modal_change').html(response);
+                        let modal = new bootstrap.Modal(document.getElementById('staticBackdropChange'), {
+                            keyboard: false
+                        });
+                        modal.show();
                     }
                 })
             }

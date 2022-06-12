@@ -18,10 +18,11 @@
         $res = '';
         foreach($tree as $row){
             if($row['sub_id'] == $sub_id){
+                $name = empty($row['name']) ? 'root':$row['name'];
                 $res .=
                     "
                         <li>
-                            root ".$row['id']."
+                            <span class=\"normal_cursor\" onclick=\"change(".$row['id'].")\">$name ".$row['id']."</span>
                             <button class=\"btn btn-success btn-sm\" type=\"button\" onclick=\"create(".$row['id'].", 'create', ".$sub_id.")\">+</button>
                             <button class=\"btn btn-danger btn-sm\" type=\"button\" onclick=\"create(".$row['id'].", 'delete', ".$sub_id.")\">-</button>
                             ".tree($tree, $row['id'])."
