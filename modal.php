@@ -11,7 +11,7 @@
                             Are you gonna delete this tree, are you sure?
                         </div>
                         <div class=\"modal-footer\">
-                            <label id=\"second\" class=\"left_label\">5</label>
+                            <label id=\"second\" class=\"left_label\">20</label>
                             <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\" id='Close'>Close</button>
                             <button type=\"button\" class=\"btn btn-primary\" id=\"Accept\">Ok</button>
                         </div>
